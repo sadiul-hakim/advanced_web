@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSE Clock</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        #time {
+            font-size: 2rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+<div id="time">Waiting for server time...</div>
+
+<script>
+    const eventSource = new EventSource('/time');
+
+    eventSource.onmessage = (event) => {
+        document.getElementById('time').innerText = event.data;
+    };
+
+    eventSource.onerror = () => {
+        document.getElementById('time').innerText = 'Connection lost, retrying...';
+    };
+</script>
+</body>
+</html>
