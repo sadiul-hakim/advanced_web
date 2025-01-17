@@ -8,6 +8,7 @@ import java.time.Duration;
 @Data
 @AllArgsConstructor
 public class UserRateLimit {
-    private int limit;
+    private int limitPerSecond;
+    private int limitPerMinute;
     private Duration timeout;
 }

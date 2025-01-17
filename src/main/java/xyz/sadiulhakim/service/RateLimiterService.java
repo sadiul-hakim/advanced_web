@@ -5,6 +5,7 @@ import io.github.resilience4j.ratelimiter.RateLimiterConfig;
 import io.github.resilience4j.ratelimiter.RateLimiterRegistry;
 import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import org.springframework.stereotype.Component;
+import xyz.sadiulhakim.UserRateLimit;
 
 import java.time.Duration;
 
@@ -17,18 +18,33 @@ public class RateLimiterService {
         this.rateLimiterRegistry = rateLimiterRegistry;
     }
 
-    public boolean canLoad(String userId, int limit, Duration timeout) {
-        RateLimiterConfig config = RateLimiterConfig.custom()
-                .limitForPeriod(limit)
-                .limitRefreshPeriod(timeout) // Refresh period should match the timeout
-                .timeoutDuration(timeout)
+    public void acquirePermission(String userId, UserRateLimit userLimit) throws RateLimitExceededException {
+
+        // Create rate limiters for both per-second and per-minute limits
+        RateLimiterConfig configPerSecond = RateLimiterConfig.custom()
+                .limitForPeriod(userLimit.getLimitPerSecond())
+                .limitRefreshPeriod(userLimit.getTimeout())
+                .timeoutDuration(Duration.ofMillis(1))
+                .build();
+
+        RateLimiterConfig configPerMinute = RateLimiterConfig.custom()
+                .limitForPeriod(userLimit.getLimitPerMinute())
+                .limitRefreshPeriod(Duration.ofMinutes(1))
+                .timeoutDuration(Duration.ofMillis(1))
                 .build();
 
         try {
-            rateLimiterRegistry.rateLimiter(userId, config).acquirePermission();
-            return true;
+            // Acquire both permits simultaneously
+            rateLimiterRegistry.rateLimiter(userId + "_per_second", configPerSecond).acquirePermission();
+            rateLimiterRegistry.rateLimiter(userId + "_per_minute", configPerMinute).acquirePermission();
         } catch (RequestNotPermitted exception) {
-            return false;
+            throw new RateLimitExceededException("Rate limit exceeded");
+        }
+    }
+
+    public static class RateLimitExceededException extends RuntimeException {
+        public RateLimitExceededException(String message) {
+            super(message);
         }
     }
 }
