@@ -30,8 +30,12 @@ public class TestController {
                 new UserRateLimit(1, 60, Duration.ofSeconds(1))); // Default limit if user not found
 
         try {
-            rateLimiterService.acquirePermission(userId, userLimit);
-            return "pong";
+            if (rateLimiterService.acquirePermission(userId, userLimit)) {
+
+                return "pong";
+            }
+
+            return "Limit Exceeded";
         } catch (RateLimiterService.RateLimitExceededException e) {
             return "Rate limit exceeded";
         }

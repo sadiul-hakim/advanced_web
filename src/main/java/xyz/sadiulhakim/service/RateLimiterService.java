@@ -18,7 +18,7 @@ public class RateLimiterService {
         this.rateLimiterRegistry = rateLimiterRegistry;
     }
 
-    public void acquirePermission(String userId, UserRateLimit userLimit) throws RateLimitExceededException {
+    public boolean acquirePermission(String userId, UserRateLimit userLimit) throws RateLimitExceededException {
 
         // Create rate limiters for both per-second and per-minute limits
         RateLimiterConfig configPerSecond = RateLimiterConfig.custom()
@@ -35,10 +35,11 @@ public class RateLimiterService {
 
         try {
             // Acquire both permits simultaneously
-            rateLimiterRegistry.rateLimiter(userId + "_per_second", configPerSecond).acquirePermission();
-            rateLimiterRegistry.rateLimiter(userId + "_per_minute", configPerMinute).acquirePermission();
+            boolean a = rateLimiterRegistry.rateLimiter(userId + "_per_second", configPerSecond).acquirePermission();
+            boolean b = rateLimiterRegistry.rateLimiter(userId + "_per_minute", configPerMinute).acquirePermission();
+            return a && b;
         } catch (RequestNotPermitted exception) {
-            throw new RateLimitExceededException("Rate limit exceeded");
+            return false;
         }
     }
 
