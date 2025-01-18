@@ -8,6 +8,7 @@ import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.handler.LoggingHandler;
 import org.springframework.integration.json.JsonToObjectTransformer;
 import org.springframework.integration.json.ObjectToJsonTransformer;
+import org.springframework.integration.router.PayloadTypeRouter;
 import org.springframework.integration.support.json.Jackson2JsonObjectMapper;
 import org.springframework.messaging.MessageChannel;
 import xyz.sadiulhakim.pojo.Student;
@@ -24,6 +25,16 @@ public class IntegrationConfig {
 
     @Bean
     public MessageChannel outputChannel() {
+        return new DirectChannel();
+    }
+
+    @Bean
+    public MessageChannel backupChannel() {
+        return new DirectChannel();
+    }
+
+    @Bean
+    public MessageChannel defaultChannel() {
         return new DirectChannel();
     }
 
@@ -47,12 +58,48 @@ public class IntegrationConfig {
     public IntegrationFlow integrationFlow() {
         return IntegrationFlow.from("inputChannel")
                 .log(LoggingHandler.Level.INFO, "Message received in inputChannel") // Log message entry
+                .enrichHeaders(headers -> {
+                    headers.header("source", "inputChannel")  // Add a custom header
+                            .header("processedBy", "integrationFlow")  // Add another custom header
+                            .headerFunction("customTimestamp", m -> System.currentTimeMillis());  // Add dynamic header
+                })
                 .transform(objectToJsonTransformer())
                 .log(LoggingHandler.Level.INFO, "Message transformed to JSON")
                 .channel("outputChannel")
                 .log(LoggingHandler.Level.INFO, "Message passed to outputChannel")
                 .transform(jsonToObjectTransformer())
                 .log(LoggingHandler.Level.INFO, "Message transformed back to Student")
+                .route(payloadTypeRouter())
+                .get();
+    }
+
+    @Bean
+    public PayloadTypeRouter payloadTypeRouter() {
+        PayloadTypeRouter router = new PayloadTypeRouter();
+        router.setChannelMapping(Student.class.getName(), "backupChannel");
+        router.setDefaultOutputChannel(defaultChannel());
+        return router;
+    }
+
+    @Bean
+    public IntegrationFlow backupFlow() {
+        return IntegrationFlow.from("inputChannel")
+                .log("Message routed to backupChannel")
+                .handle((p, h) -> {
+                    // Additional logic can be placed here if needed
+                    return null;
+                })
+                .get();
+    }
+
+    @Bean
+    public IntegrationFlow defaultFlow() {
+        return IntegrationFlow.from("defaultChannel")
+                .log("Message routed to defaultChannel")
+                .handle((p, h) -> {
+                    // Additional logic can be placed here if needed
+                    return null;
+                })
                 .get();
     }
 }
