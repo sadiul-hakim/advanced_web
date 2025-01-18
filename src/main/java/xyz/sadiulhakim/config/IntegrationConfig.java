@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.channel.DirectChannel;
+import org.springframework.integration.channel.PublishSubscribeChannel;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.handler.LoggingHandler;
 import org.springframework.integration.json.JsonToObjectTransformer;
@@ -42,6 +43,11 @@ public class IntegrationConfig {
     @Bean
     public MessageChannel defaultChannel() {
         return new DirectChannel();
+    }
+
+    @Bean
+    public MessageChannel timeBroadcaster() {
+        return new PublishSubscribeChannel();
     }
 
     @Bean
@@ -92,6 +98,7 @@ public class IntegrationConfig {
 
     @Bean
     public PayloadTypeRouter payloadTypeRouter() {
+
         PayloadTypeRouter router = new PayloadTypeRouter();
         router.setChannelMapping(Student.class.getName(), "backupChannel");
         router.setDefaultOutputChannel(defaultChannel());

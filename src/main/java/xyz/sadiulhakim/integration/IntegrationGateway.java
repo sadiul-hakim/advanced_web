@@ -15,4 +15,7 @@ public interface IntegrationGateway {
 
     @Gateway(requestChannel = "inputChannel")
     void sendRawJson(String json);
+
+    @Gateway(requestChannel = "timeBroadcaster")
+    void broadcast(String date);
 }
