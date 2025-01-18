@@ -77,10 +77,13 @@ public class IntegrationConfig {
                 })
                 .transform(objectToJsonTransformer())
                 .log(LoggingHandler.Level.INFO, "Message transformed to JSON")
+                .filter(Student.class, s -> s.name().startsWith("Sadi"))
                 .channel("outputChannel")
                 .log(LoggingHandler.Level.INFO, "Message passed to outputChannel")
                 .transform(jsonToObjectTransformer())
                 .log(LoggingHandler.Level.INFO, "Message transformed back to Student")
+                .filter(Student.class, s -> s.name().contains("Hakim"))
+                .log(LoggingHandler.Level.INFO, "Student is filter by name")
 //                .route(payloadTypeRouter())
                 .route(recipientListRouter())
                 .get();
