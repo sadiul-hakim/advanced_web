@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.channel.PublishSubscribeChannel;
+import org.springframework.integration.core.GenericSelector;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.handler.LoggingHandler;
 import org.springframework.integration.json.JsonToObjectTransformer;
@@ -82,7 +83,7 @@ public class IntegrationConfig {
                 .log(LoggingHandler.Level.INFO, "Message passed to outputChannel")
                 .transform(jsonToObjectTransformer())
                 .log(LoggingHandler.Level.INFO, "Message transformed back to Student")
-                .filter(Student.class, s -> s.name().contains("Hakim"))
+                .filter(nameContainsHakim())
                 .log(LoggingHandler.Level.INFO, "Student is filter by name")
 //                .route(payloadTypeRouter())
                 .route(recipientListRouter())
@@ -106,5 +107,10 @@ public class IntegrationConfig {
         router.setChannelMapping(Student.class.getName(), "backupChannel");
         router.setDefaultOutputChannel(defaultChannel());
         return router;
+    }
+
+    @Bean
+    public GenericSelector<Student> nameContainsHakim() {
+        return student -> student.name().contains("Hakim");
     }
 }
