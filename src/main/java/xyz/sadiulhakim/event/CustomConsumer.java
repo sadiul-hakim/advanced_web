@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class CustomConsumer {
 
     @EventListener(CustomEvent.class)
-    public void eventListener(CustomEvent event) {
+    public void eventListener1(CustomEvent event) {
         log.info(event.getMsg());
     }
 }

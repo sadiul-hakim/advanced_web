@@ -1,30 +1,32 @@
 package xyz.sadiulhakim.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.integration.support.MessageBuilder;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageChannel;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import xyz.sadiulhakim.integration.IntegrationGateway;
+import xyz.sadiulhakim.pojo.Student;
 
 @RestController
 public class IntegrationController {
 
-    private final MessageChannel directChannel;
+    private final IntegrationGateway gateway;
 
-    public IntegrationController(MessageChannel directChannel) {
-        this.directChannel = directChannel;
+    public IntegrationController(IntegrationGateway gateway) {
+        this.gateway = gateway;
     }
+
 
     @GetMapping("/integrate/{text}")
     public ResponseEntity<?> integrate(@PathVariable String text) {
-        Message<String> message = MessageBuilder.withPayload(text)
-                .setHeader("name", "Hakim")
-                .build();
+//        Message<String> message = MessageBuilder.withPayload(text)
+//                .setHeader("name", "Hakim")
+//                .build();
+//        gateway.send(text);
+        return ResponseEntity.ok("Done");
+    }
 
-        directChannel.send(message);
-
+    @PostMapping("/send-student")
+    public ResponseEntity<?> sendStudent(@RequestBody Student st){
+        gateway.sendStudent(st);
         return ResponseEntity.ok("Done");
     }
 }
