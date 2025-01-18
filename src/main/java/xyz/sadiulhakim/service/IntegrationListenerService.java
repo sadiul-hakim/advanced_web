@@ -28,6 +28,11 @@ public class IntegrationListenerService {
         System.out.println("Backup Channel: " + message.getPayload());
     }
 
+    @ServiceActivator(inputChannel = "backup2Channel")
+    public void backup2Channel(Message<?> message) throws MessagingException {
+        System.out.println("Backup 2 Channel: " + message.getPayload());
+    }
+
     @ServiceActivator(inputChannel = "defaultChannel")
     public void defaultChannel(Message<?> message) throws MessagingException {
         System.out.println("Default Channel: " + message.getPayload());

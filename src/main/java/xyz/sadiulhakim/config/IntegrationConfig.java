@@ -9,6 +9,7 @@ import org.springframework.integration.handler.LoggingHandler;
 import org.springframework.integration.json.JsonToObjectTransformer;
 import org.springframework.integration.json.ObjectToJsonTransformer;
 import org.springframework.integration.router.PayloadTypeRouter;
+import org.springframework.integration.router.RecipientListRouter;
 import org.springframework.integration.support.json.Jackson2JsonObjectMapper;
 import org.springframework.messaging.MessageChannel;
 import xyz.sadiulhakim.pojo.Student;
@@ -30,6 +31,11 @@ public class IntegrationConfig {
 
     @Bean
     public MessageChannel backupChannel() {
+        return new DirectChannel();
+    }
+
+    @Bean
+    public MessageChannel backup2Channel() {
         return new DirectChannel();
     }
 
@@ -69,8 +75,19 @@ public class IntegrationConfig {
                 .log(LoggingHandler.Level.INFO, "Message passed to outputChannel")
                 .transform(jsonToObjectTransformer())
                 .log(LoggingHandler.Level.INFO, "Message transformed back to Student")
-                .route(payloadTypeRouter())
+//                .route(payloadTypeRouter())
+                .route(recipientListRouter())
                 .get();
+    }
+
+    @Bean
+    public RecipientListRouter recipientListRouter() {
+        RecipientListRouter listRouter = new RecipientListRouter();
+        listRouter.addRecipient("backupChannel");
+        listRouter.addRecipient("backup2Channel");
+        listRouter.setDefaultOutputChannel(defaultChannel());
+
+        return listRouter;
     }
 
     @Bean
@@ -79,27 +96,5 @@ public class IntegrationConfig {
         router.setChannelMapping(Student.class.getName(), "backupChannel");
         router.setDefaultOutputChannel(defaultChannel());
         return router;
-    }
-
-    @Bean
-    public IntegrationFlow backupFlow() {
-        return IntegrationFlow.from("inputChannel")
-                .log("Message routed to backupChannel")
-                .handle((p, h) -> {
-                    // Additional logic can be placed here if needed
-                    return null;
-                })
-                .get();
-    }
-
-    @Bean
-    public IntegrationFlow defaultFlow() {
-        return IntegrationFlow.from("defaultChannel")
-                .log("Message routed to defaultChannel")
-                .handle((p, h) -> {
-                    // Additional logic can be placed here if needed
-                    return null;
-                })
-                .get();
     }
 }
