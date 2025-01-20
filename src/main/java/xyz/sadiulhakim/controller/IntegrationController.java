@@ -2,21 +2,20 @@ package xyz.sadiulhakim.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xyz.sadiulhakim.integration.IntegrationGateway;
-import xyz.sadiulhakim.pojo.Student;
+import xyz.sadiulhakim.integration.gateway.IntegrationGateway;
+import xyz.sadiulhakim.student.pojo.Student;
 
 @RestController
-public class IntegrationController {
+class IntegrationController {
 
     private final IntegrationGateway gateway;
 
-    public IntegrationController(IntegrationGateway gateway) {
+    IntegrationController(IntegrationGateway gateway) {
         this.gateway = gateway;
     }
 
-
     @GetMapping("/integrate/{text}")
-    public ResponseEntity<?> integrate(@PathVariable String text) {
+    ResponseEntity<?> integrate(@PathVariable String text) {
 //        Message<String> message = MessageBuilder.withPayload(text)
 //                .setHeader("name", "Hakim")
 //                .build();
@@ -25,7 +24,7 @@ public class IntegrationController {
     }
 
     @PostMapping("/send-student")
-    public ResponseEntity<?> sendStudent(@RequestBody Student st){
+    ResponseEntity<?> sendStudent(@RequestBody Student st){
         gateway.sendStudent(st);
         return ResponseEntity.ok("Done");
     }

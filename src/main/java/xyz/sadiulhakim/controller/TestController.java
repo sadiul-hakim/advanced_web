@@ -3,14 +3,14 @@ package xyz.sadiulhakim.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import xyz.sadiulhakim.UserRateLimit;
+import xyz.sadiulhakim.pojo.UserRateLimit;
 import xyz.sadiulhakim.service.RateLimiterService;
 
 import java.time.Duration;
 import java.util.Map;
 
 @RestController
-public class TestController {
+class TestController {
 
     private final RateLimiterService rateLimiterService;
 
@@ -24,7 +24,7 @@ public class TestController {
     }
 
     @GetMapping("/ping")
-    public String pong(@RequestParam String userId) {
+    String pong(@RequestParam String userId) {
 
         UserRateLimit userLimit = rateLimits.getOrDefault(userId,
                 new UserRateLimit(1, 60, Duration.ofSeconds(1))); // Default limit if user not found

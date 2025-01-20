@@ -1,17 +1,18 @@
-package xyz.sadiulhakim.integration;
+package xyz.sadiulhakim.integration.producer;
 
 import org.springframework.stereotype.Component;
+import xyz.sadiulhakim.integration.gateway.IntegrationGateway;
 
 import java.time.format.DateTimeFormatter;
 
 @Component
-public class Broadcaster {
+class Broadcaster {
 
     private final IntegrationGateway integrationGateway;
 
     private final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss a z");
 
-    public Broadcaster(IntegrationGateway integrationGateway) {
+    Broadcaster(IntegrationGateway integrationGateway) {
         this.integrationGateway = integrationGateway;
     }
 

@@ -5,7 +5,7 @@ import io.github.resilience4j.ratelimiter.RateLimiterConfig;
 import io.github.resilience4j.ratelimiter.RateLimiterRegistry;
 import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import org.springframework.stereotype.Component;
-import xyz.sadiulhakim.UserRateLimit;
+import xyz.sadiulhakim.pojo.UserRateLimit;
 
 import java.time.Duration;
 

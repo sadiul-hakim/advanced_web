@@ -1,4 +1,4 @@
-package xyz.sadiulhakim;
+package xyz.sadiulhakim.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -5,10 +5,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class RateLimitConfig {
+class RateLimitConfig {
 
     @Bean
-    public RateLimiterRegistry rateLimiterRegistry() {
+    RateLimiterRegistry rateLimiterRegistry() {
         return RateLimiterRegistry.ofDefaults();
     }
 }

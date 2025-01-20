@@ -14,61 +14,61 @@ import org.springframework.integration.router.PayloadTypeRouter;
 import org.springframework.integration.router.RecipientListRouter;
 import org.springframework.integration.support.json.Jackson2JsonObjectMapper;
 import org.springframework.messaging.MessageChannel;
-import xyz.sadiulhakim.pojo.Student;
+import xyz.sadiulhakim.student.pojo.Student;
 
 @Configuration
 //@EnableIntegration
 //@IntegrationComponentScan
-public class IntegrationConfig {
+class IntegrationConfig {
 
     @Bean
-    public MessageChannel inputChannel() {
+    MessageChannel inputChannel() {
         return new DirectChannel();
     }
 
     @Bean
-    public MessageChannel outputChannel() {
+    MessageChannel outputChannel() {
         return new DirectChannel();
     }
 
     @Bean
-    public MessageChannel backupChannel() {
+    MessageChannel backupChannel() {
         return new DirectChannel();
     }
 
     @Bean
-    public MessageChannel backup2Channel() {
+    MessageChannel backup2Channel() {
         return new DirectChannel();
     }
 
     @Bean
-    public MessageChannel defaultChannel() {
+    MessageChannel defaultChannel() {
         return new DirectChannel();
     }
 
     @Bean
-    public MessageChannel timeBroadcaster() {
+    MessageChannel timeBroadcaster() {
         return new PublishSubscribeChannel();
     }
 
     @Bean
-    public ObjectToJsonTransformer objectToJsonTransformer() {
+    ObjectToJsonTransformer objectToJsonTransformer() {
         return new ObjectToJsonTransformer(mapper());
     }
 
     @Bean
-    public JsonToObjectTransformer jsonToObjectTransformer() {
+    JsonToObjectTransformer jsonToObjectTransformer() {
         return new JsonToObjectTransformer(Student.class);
     }
 
     @Bean
-    public Jackson2JsonObjectMapper mapper() {
+    Jackson2JsonObjectMapper mapper() {
         ObjectMapper mapper = new ObjectMapper();
         return new Jackson2JsonObjectMapper(mapper);
     }
 
     @Bean
-    public IntegrationFlow integrationFlow() {
+    IntegrationFlow integrationFlow() {
         return IntegrationFlow.from("inputChannel")
                 .log(LoggingHandler.Level.INFO, "Message received in inputChannel") // Log message entry
                 .enrichHeaders(headers -> {
@@ -91,7 +91,7 @@ public class IntegrationConfig {
     }
 
     @Bean
-    public RecipientListRouter recipientListRouter() {
+    RecipientListRouter recipientListRouter() {
         RecipientListRouter listRouter = new RecipientListRouter();
         listRouter.addRecipient("backupChannel");
         listRouter.addRecipient("backup2Channel");
@@ -101,7 +101,7 @@ public class IntegrationConfig {
     }
 
     @Bean
-    public PayloadTypeRouter payloadTypeRouter() {
+    PayloadTypeRouter payloadTypeRouter() {
 
         PayloadTypeRouter router = new PayloadTypeRouter();
         router.setChannelMapping(Student.class.getName(), "backupChannel");
@@ -110,7 +110,7 @@ public class IntegrationConfig {
     }
 
     @Bean
-    public GenericSelector<Student> nameContainsHakim() {
+    GenericSelector<Student> nameContainsHakim() {
         return student -> student.name().contains("Hakim");
     }
 }

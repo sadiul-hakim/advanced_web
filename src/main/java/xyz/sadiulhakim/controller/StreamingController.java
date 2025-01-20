@@ -13,10 +13,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-public class StreamingController {
+class StreamingController {
 
     @GetMapping("/stream")
-    public ResponseBodyEmitter stream() {
+    ResponseBodyEmitter stream() {
         var emitter = new ResponseBodyEmitter();
 
         Thread.ofVirtual().start(() -> {
@@ -35,7 +35,7 @@ public class StreamingController {
     }
 
     @GetMapping("/time")
-    public SseEmitter streamSse() {
+    SseEmitter streamSse() {
         var sse = new SseEmitter();
 
         var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss a z");

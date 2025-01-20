@@ -1,8 +1,8 @@
-package xyz.sadiulhakim.integration;
+package xyz.sadiulhakim.integration.gateway;
 
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
-import xyz.sadiulhakim.pojo.Student;
+import xyz.sadiulhakim.student.pojo.Student;
 
 @MessagingGateway
 public interface IntegrationGateway {
