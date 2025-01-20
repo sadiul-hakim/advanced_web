@@ -13,6 +13,9 @@ other module by default
 
 ## Ways to make them available outside
 
-1. Named Interface `Create package-info.java file under sub packages and give them name`
+1. Named Interface
+   `Create package-info.java file under sub packages and use @NamedInterface annotation to give a name or just use @NamedAnnotation on the type(class,record) name. NamedInterface make type(class,record) avilable outside`.
 2. Open Application Modules
-   `Create package-info.java file under module and select type Open, but that makes all the files avilable`
+   `Create package-info.java file under module and use @ApplicationModule annotation to select type Open, but that makes all the files avilable outside of the module`
+3. allowedDependencies
+   `this paramater is used inside @ApplicationModule to specify which modules are allowed to be this modules dependency. After the = sign use {} to pass command seprated modules name and use {moduleName} :: {NameFilterface name} this syntax to pass alowed NamedInterfaces name.`

@@ -63,6 +63,16 @@
             <version>2.1.0</version>
         </dependency>
         <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jdbc</artifactId>
+        </dependency>
+        <!--   Integration Starts     -->
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
@@ -84,26 +94,14 @@
             <artifactId>spring-integration-http</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.modulith</groupId>
-            <artifactId>spring-modulith-starter-core</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.integration</groupId>
             <artifactId>spring-integration-jdbc</artifactId>
         </dependency>
+        <!--   Integration Ends     -->
+        <!--   Modulith Starts     -->
         <dependency>
             <groupId>org.springframework.modulith</groupId>
-            <artifactId>spring-modulith-starter-test</artifactId>
-            <scope>test</scope>
+            <artifactId>spring-modulith-starter-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.modulith</groupId>
@@ -116,6 +114,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.modulith</groupId>
+            <artifactId>spring-modulith-events-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.modulith</groupId>
             <artifactId>spring-modulith-docs</artifactId>
         </dependency>
         <dependency>
@@ -123,6 +125,12 @@
             <artifactId>spring-modulith-observability</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.modulith</groupId>
+            <artifactId>spring-modulith-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--   Modulith Ends     -->
     </dependencies>
 
     <build>

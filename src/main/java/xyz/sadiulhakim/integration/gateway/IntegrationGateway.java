@@ -2,8 +2,10 @@ package xyz.sadiulhakim.integration.gateway;
 
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
+import org.springframework.modulith.NamedInterface;
 import xyz.sadiulhakim.student.pojo.Student;
 
+@NamedInterface("integration-gateway")
 @MessagingGateway
 public interface IntegrationGateway {
 
