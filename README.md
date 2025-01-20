@@ -13,6 +13,10 @@ other module by default
 
 ## Ways to make them available outside
 
+### Testing - This testing makes sure you do not violate modularity rules.
+Crate a test file then declare a ApplicationModules instance like this `static ApplicationModules modules = ApplicationModules.of(Application.class);` then
+inside a test method call `modules.verify()`.
+
 1. Named Interface
    `Create package-info.java file under sub packages and use @NamedInterface annotation to give a name or just use @NamedAnnotation on the type(class,record) name. NamedInterface make type(class,record) avilable outside`.
 2. Open Application Modules
