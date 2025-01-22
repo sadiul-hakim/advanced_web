@@ -36,7 +36,22 @@ into RoleService but that is what would make Spring Moldulith Angry. How to solv
 publish an event with role id and do not inject UserService in
 RoleService. Then in a different EventListener class inject Role And User Service. For listening to an event you can use
 `EventListsner or TransactionalEventListener` Annotation.
-You can use `@Async` annotation to make listening Asynchronous. But remember for `@TransactionalEventListener` the
+You can use `@Async` annotation to make listening Asynchronous.
+
+***But remember for `@TransactionalEventListener` the
 publishing method or class should be annotated with `@Transactional`.
 Same to `@ApplicationModuleListener` as it is annotated with
-`@TransactionalEventListener , @Async and @Transactional(propagation = Propagation.REQUIRES_NE)`.
+`@TransactionalEventListener , @Async and @Transactional(propagation = Propagation.REQUIRES_NE)`***.
+
+# 2. Spring Events (Observer Pattern, One Subject multiple Observer)
+
+Spring is Event Driven. Spring itself publishes some events when the application starts like WebServerInitializedEvent
+etc.
+
+***We can create custom event and publish from anywhere of our spring application. Then we can listen to that
+event from listener. And take actions.***
+
+1. Implement ApplicationEvent to create an Event
+2. Implement ApplicationListener or Use @EventListener,@TransactionalEventListener to capture an Event
+   `When the task is Transactional we should use @TransactionalEventListener otherwise the event would not be listened to.`
+3. Use ApplicationEventPublisher to publish an Event
