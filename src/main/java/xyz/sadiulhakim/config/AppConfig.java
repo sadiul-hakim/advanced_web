@@ -8,8 +8,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-@EnableAsync
+
 @Configuration
+@EnableAsync
 @EnableScheduling
 class AppConfig {
 

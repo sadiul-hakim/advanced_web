@@ -1,7 +1,9 @@
 1. Modulith
 2. Event
-3. Integration
-4. Data Jdbc
+3. Integration (Messaging)
+4. Socket
+5. Job Schedules
+6. Session
 
 # 1. Modulith
 
@@ -55,3 +57,12 @@ event from listener. And take actions.***
 2. Implement ApplicationListener or Use @EventListener,@TransactionalEventListener to capture an Event
    `When the task is Transactional we should use @TransactionalEventListener otherwise the event would not be listened to.`
 3. Use ApplicationEventPublisher to publish an Event
+
+# 6. Spring Session
+
+Dependency
+
+1. spring-boot-starter-data-redis
+2. spring-session-data-redis
+
+Use  `HttpSession` to access and Send session.
