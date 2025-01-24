@@ -77,21 +77,30 @@ components while ensuring loose coupling and scalability.
    payload into a Java object or vice versa.
 4. `Routers` determine the path a message should take based on its content or metadata. For example, a router can direct
    messages to different endpoints based on a header value.
-5. `Service activators` are endpoints that connect a Spring service (business logic) to the messaging system. They process
+5. `Service activators` are endpoints that connect a Spring service (business logic) to the messaging system. They
+   process
    incoming messages and produce responses, if necessary.
-6. `Channels` are the conduits for passing messages between different components in Spring Integration. They decouple the
+6. `Channels` are the conduits for passing messages between different components in Spring Integration. They decouple
+   the
    sender and receiver to ensure flexibility and scalability.
 
 ## Types of Channels in Spring Integration
 
-1. `Direct Channel` - Messages are sent directly from the sender to the receiver within the same thread. This is synchronous and has low overhead.
-2. `Queue Channel` - Acts like a message queue where messages are stored until consumed by a receiver. It supports asynchronous communication.
-3. `Publish-Subscribe Channel` - Allows multiple consumers to subscribe to the same channel and receive copies of the same message, enabling broadcast messaging.
-4. `Executor Channel` - Utilizes a task executor for asynchronous message handling. It decouples the sender and receiver threads for better performance.
-5. `Priority Channel` - Processes messages based on priority rather than arrival order, enabling prioritized message handling.
+1. `Direct Channel` - Messages are sent directly from the sender to the receiver within the same thread. This is
+   synchronous and has low overhead.
+2. `Queue Channel` - Acts like a message queue where messages are stored until consumed by a receiver. It supports
+   asynchronous communication.
+3. `Publish-Subscribe Channel` - Allows multiple consumers to subscribe to the same channel and receive copies of the
+   same message, enabling broadcast messaging.
+4. `Executor Channel` - Utilizes a task executor for asynchronous message handling. It decouples the sender and receiver
+   threads for better performance.
+5. `Priority Channel` - Processes messages based on priority rather than arrival order, enabling prioritized message
+   handling.
 
 ## Integration Flow
-An integration flow defines the sequence of components through which messages pass in a Spring Integration application. It typically consists of:
+
+An integration flow defines the sequence of components through which messages pass in a Spring Integration application.
+It typically consists of:
 
 1. Message Source – Generates or receives messages.
 2. Channels – Pass messages between components.
@@ -109,7 +118,15 @@ An integration flow defines the sequence of components through which messages pa
 7. The message is delivered to its final Message Destination, which could be another system, database, or file.
 
 ## Example of Integration Flow
+
 Consider a file processing flow:
+
+### Dependencies
+
+1. spring-boot-starter-integration
+2. spring-integration-file
+
+### Flow
 
 1. A File Inbound Adapter reads files from a directory.
 2. The messages (file data) are sent through a Queue Channel for asynchronous processing.
@@ -117,8 +134,6 @@ Consider a file processing flow:
 4. A Transformer converts the file content into a Java object.
 5. A Service Activator processes the data, performing business operations.
 6. The result is sent to an Outbound Adapter (e.g., HTTP request or database write).
-
-Would you like to dive deeper into any of these elements?
 
 # 6. Spring Session
 
