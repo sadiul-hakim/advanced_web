@@ -135,6 +135,8 @@ Consider a file processing flow:
 5. A Service Activator processes the data, performing business operations.
 6. The result is sent to an Outbound Adapter (e.g., HTTP request or database write).
 
+***See Class FileProcessingIntegrationConfig***
+
 # 6. Spring Session
 
 Dependency
